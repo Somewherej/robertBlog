@@ -75,9 +75,11 @@
 
 # 赞助
 
+
 你可以通过下方二维码赞助本项目
 
 <img src="images/QRcode.png" alt="图片名称" width = "250" height = "250" align=left />
+
 
 # 致谢
 
