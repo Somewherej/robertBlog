@@ -27,7 +27,7 @@
 
 #  功能简介
    - 基于RBAC的权限管理
-   - 基于redis的实时访问刷新
+   - 基于redis的实时访问量刷新
    - 文章,标签的增删改查
    - 基于SpringSecurity的登录验证
    
@@ -88,7 +88,7 @@
 
 你可以通过下方二维码赞助本项目
 
-<img src="images/QRcode.png" alt="图片名称" width = "250" height = "250" align=left />  
+<img src="images/QRcode.png" alt="图片名称" width = "250" height = "250" align=center />   
 
 
 # 致谢
