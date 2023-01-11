@@ -1,0 +1,134 @@
+package com.robertBlog.controller;
+import com.robertBlog.domain.entity.LoginUser;
+import com.robertBlog.domain.entity.User;
+import com.robertBlog.domain.entity.Menu;
+import com.robertBlog.domain.entity.domain.ResponseResult;
+import com.robertBlog.domain.vo.AdminUserInfoVo;
+import com.robertBlog.domain.vo.RoutersVo;
+import com.robertBlog.domain.vo.UserInfoVo;
+import com.robertBlog.enums.AppHttpCodeEnum;
+import com.robertBlog.exception.SystemException;
+import com.robertBlog.service.LoginService;
+import com.robertBlog.service.MenuService;
+import com.robertBlog.service.RoleService;
+import com.robertBlog.utils.BeanCopyUtils;
+import com.robertBlog.utils.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+
+/**
+ * @author Somewherej
+ * @Date 2022-11-23 11:38
+ * @Description
+ */
+@RestController
+public class LoginController {
+    @Autowired  //注入
+    private LoginService loginService;
+    @Autowired  //注入
+    private MenuService menuService;
+
+    @Autowired  //注入
+    private RoleService roleService;
+
+    @PostMapping("/user/login")
+    public ResponseResult login(@RequestBody User user){
+        if(!StringUtils.hasText(user.getUserName())){
+            //提示 必须要传用户名
+            throw new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME);
+        }
+        return loginService.login(user);
+    }
+
+    @PostMapping("/user/logout")
+    public ResponseResult logout(){
+        return loginService.logout();
+    }
+
+
+
+
+
+    /*
+    函数说明:查询当前登录用户的权限信息  角色信息  用户信息
+    请求返回的数据
+    AdminUserInfoVo
+    {
+    "code": 200,
+    "data": {
+        "permissions": [
+            "system:user:list",
+            "system:role:list",
+            "system:menu:list",
+            "system:user:query",
+            "system:user:add",
+            "system:user:edit",
+            "system:user:remove",
+            "system:user:export",
+            "system:user:import",
+            "system:user:resetPwd",
+            "system:role:query",
+            "system:role:add",
+            "system:role:edit",
+            "system:role:remove",
+            "system:role:export",
+            "system:menu:query",
+            "system:menu:add",
+            "system:menu:edit",
+            "system:menu:remove",
+            "content:category:list",
+            "content:article:list",
+            "content:article:writer"
+        ],
+        "roles": [
+            "admin"
+        ],
+        "user": {
+            "id": "1",
+            "nickName": "sg333"
+        }
+    },
+    "msg": "操作成功"
+    }
+     * */
+     @GetMapping("getInfo")
+     public  ResponseResult<AdminUserInfoVo> getInfo(){
+         //获取当前登录的用户
+         LoginUser loginUser = SecurityUtils.getLoginUser();
+
+         //根据用户id查询权限信息
+         //通过menuService行查询
+         //查询返回的是一个字符串集合
+         List<String> perms = menuService.selectPermsByUserId(loginUser.getUser().getId());
+
+         //根据用户id查询角色信息
+         List<String> roleKeyList = roleService.selectRoleKeyByUserId(loginUser.getUser().getId());
+         //List<String> roleKeyList = null;
+         //获取用户信息
+         User user = loginUser.getUser();
+         //封装Vo对象向前端传递数据
+         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(user,UserInfoVo.class);
+         //再封装一次Vo返回
+         AdminUserInfoVo adminUserInfoVo = new AdminUserInfoVo(perms,roleKeyList,userInfoVo);
+         //封装数据返回
+         return ResponseResult.okResult(adminUserInfoVo);
+     }
+
+
+    // 函数说明:前端为了实现动态路由的效果,需要后端有接口能返回用户所能访问的菜单数据。
+    @GetMapping("getRouters")
+    public ResponseResult<RoutersVo> getRouters(){
+         //获取用户的Id
+        Long userId = SecurityUtils.getUserId();
+        //查询menu 结果是tree的形式(为什么是tree,因为要有子菜单的层级形式)
+        List<Menu> menus = menuService.selectRouterMenuTreeByUserId(userId);
+        //封装数据返回
+        return ResponseResult.okResult(new RoutersVo(menus));
+    }
+
+}

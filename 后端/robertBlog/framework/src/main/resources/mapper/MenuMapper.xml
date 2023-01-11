@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.robertBlog.mapper.MenuMapper">
+    <!-- 查询登录用户的权限信息
+        联表操作
+        查询条件   ur.‘user_id’ = #{userId}
+                 类型是菜单 按钮
+                 状态是正常的
+                 没有被删除
+    -->
+    <select id="selectPermsByUserId" resultType="java.lang.String">
+        SELECT
+            DISTINCT m.perms
+        FROM
+            `user_role` ur
+                LEFT JOIN `role_menu` rm ON ur.`role_id` = rm.`role_id`
+                LEFT JOIN `menu` m ON m.`id` = rm.`menu_id`
+        WHERE
+            ur.`user_id` = #{userId} AND
+            m.`menu_type` IN ('C','F') AND
+            m.`status` = 0 AND
+            m.`del_flag` = 0
+    </select>
+
+
+
+    <!-- 查询登录所有的菜单信息   可以理解为就是管理员
+          查询条件   ur.‘user_id’ = #{userId}
+                   类型是菜单 按钮
+                   状态是正常的
+                   没有被删除
+      -->
+    <select id="selectAllRouterMenu" resultType="com.robertBlog.domain.entity.Menu">
+        SELECT
+            DISTINCT m.id, m.parent_id, m.menu_name, m.path, m.component, m.visible, m.status, IFNULL(m.perms,'') AS perms, m.is_frame,  m.menu_type, m.icon, m.order_num, m.create_time
+        FROM
+            `menu` m
+        WHERE
+            m.`menu_type` IN ('C','M') AND
+            m.`status` = 0 AND
+            m.`del_flag` = 0
+        ORDER BY
+            m.parent_id,m.order_num
+    </select>
+
+    <!-- 查询登录当前用户的所有菜单信息
+              联表操作
+              查询条件   ur.‘user_id’ = #{userId}
+                       类型是菜单 按钮
+                       状态是正常的
+                       没有被删除
+    -->
+    <select id="selectRouterMenuTreeByUserId" resultType="com.robertBlog.domain.entity.Menu">
+        SELECT
+            DISTINCT m.id, m.parent_id, m.menu_name, m.path, m.component, m.visible, m.status, IFNULL(m.perms,'') AS perms, m.is_frame,  m.menu_type, m.icon, m.order_num, m.create_time
+        FROM
+            `user_role` ur
+            LEFT JOIN `role_menu` rm ON ur.`role_id` = rm.`role_id`
+            LEFT JOIN `menu` m ON m.`id` = rm.`menu_id`
+        WHERE
+            ur.`user_id` = #{userId} AND
+            m.`menu_type` IN ('C','M') AND
+            m.`status` = 0 AND
+            m.`del_flag` = 0
+        ORDER BY
+            m.parent_id,m.order_num
+    </select>
+
+</mapper>
