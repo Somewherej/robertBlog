@@ -16,11 +16,21 @@
   - element-ui
 - **中间件技术**
   - redis
+- **安全管理技术**
+  - springSecurity
 - **运维技术**
   - centos
   - docker
   - nginx
   - maven
+
+
+#  功能简介
+   - 基于RBAC的权限管理
+   - 基于redis的实时访问刷新
+   - 文章,标签的增删改查
+   - 基于SpringSecurity的登录验证
+   
 
 #  项目结构
 
