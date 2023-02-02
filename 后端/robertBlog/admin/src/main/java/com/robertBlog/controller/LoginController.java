@@ -23,9 +23,13 @@ import java.util.List;
 
 /**
  * @author Somewherej
- * @Date 2022-11-23 11:38
- * @Description
+ * @date 2022-11-23 11:38
+ * @description  后台管理系统的LoginController
  */
+// @Controller 一般应用在有返回界面的应用场景下
+// @ResponseBody注解的作用简短截说就是指该类中所有的API接口返回的数据，不管你对应的方法返回Map或是其他Object，它会以Json字符串的形式返回给客户端
+// @RestController 如果只是接口，那么就用 RestController 来注解.
+// @ResponseBody注解的作用简短截说就是指该类中所有的API接口返回的数据，不管你对应的方法返回Map或是其他Object，它会以Json字符串的形式返回给客户端。
 @RestController
 public class LoginController {
     @Autowired  //注入
@@ -36,6 +40,14 @@ public class LoginController {
     @Autowired  //注入
     private RoleService roleService;
 
+    /**
+     * 函数说明:
+     *   后台管理系统登录
+     *
+     * @RequestBody 主要用来接收前端传递给后端的json字符串中的数据
+     * json字符串{userName password},
+     * 直接用User对象来接受
+     */
     @PostMapping("/user/login")
     public ResponseResult login(@RequestBody User user){
         if(!StringUtils.hasText(user.getUserName())){

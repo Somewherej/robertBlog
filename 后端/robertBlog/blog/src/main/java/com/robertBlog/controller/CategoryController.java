@@ -18,7 +18,10 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
-
+    /**
+     *  函数说明:
+     *  查询文章分类
+     */
     @GetMapping("/getCategoryList")
     public ResponseResult getCategoryList(){
         return categoryService.getCategoryList();

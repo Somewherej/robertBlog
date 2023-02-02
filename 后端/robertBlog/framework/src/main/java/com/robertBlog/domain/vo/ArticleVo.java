@@ -8,14 +8,14 @@ import java.util.List;
 
 /**
  * @author Somewherej
- * @Date 2022-12-12 17:57
- * @Description
+ * @date 2022-12-12 17:57
+ * @description   ArticleVo
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ArticleVo {
-
+    //文章id
     private Long id;
     //标题
     private String title;
@@ -30,5 +30,4 @@ public class ArticleVo {
     //访问量
     private Long viewCount;
     private List<Long> tags;
-
 }

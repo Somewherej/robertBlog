@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 // 开始定时任务功能
 @EnableScheduling
-@SpringBootApplication(scanBasePackages = {"com.robertBlog.service"})
+@SpringBootApplication
 @MapperScan("com.robertBlog.mapper")
 public class robertBlogApplication {
     public static void main(String[] args) {

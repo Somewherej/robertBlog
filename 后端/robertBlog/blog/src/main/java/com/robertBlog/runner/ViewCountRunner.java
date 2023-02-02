@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @Description
  */
 // CommandLineRunner实现项目启动时预处理功能
-    //交给Springboot容器去读取
+//交给Springboot容器去读取
 @Component
 public class ViewCountRunner implements CommandLineRunner {
 

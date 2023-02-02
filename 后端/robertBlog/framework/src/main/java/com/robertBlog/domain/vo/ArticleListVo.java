@@ -9,8 +9,8 @@ import java.util.Date;
 
 /**
  * @author Somewherej
- * @Date 2022-11-18 11:24
- * @Description
+ * @date 2022-11-18 11:24
+ * @description ArticleListVo
  */
 @Data
 @NoArgsConstructor

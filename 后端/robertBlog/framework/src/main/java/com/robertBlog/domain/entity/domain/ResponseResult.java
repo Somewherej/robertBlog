@@ -1,10 +1,10 @@
 package com.robertBlog.domain.entity.domain;
-
 /**
  * @author Somewherej
  * @data 2022-11-16 10:53
- * @descrip tion
+ * @description 统一相应格式类
  */
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.robertBlog.enums.AppHttpCodeEnum;
 
@@ -12,8 +12,17 @@ import java.io.Serializable;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseResult<T> implements Serializable {
+    /**
+     * 返回状态码
+     */
     private Integer code;
+    /**
+     * 返回信息
+     */
     private String msg;
+    /**
+     * 数据
+     */
     private T data;
 
     public ResponseResult() {
@@ -49,12 +58,17 @@ public class ResponseResult<T> implements Serializable {
         ResponseResult result = new ResponseResult();
         return result.ok(code, null, msg);
     }
-
+    /**
+     *  函数说明:
+     *    静态方法 操作成功
+     */
     public static ResponseResult okResult(Object data) {
         ResponseResult result = setAppHttpCodeEnum(AppHttpCodeEnum.SUCCESS, AppHttpCodeEnum.SUCCESS.getMsg());
+        //如果这个result的数据不为空  那就设置进去
         if(data!=null) {
             result.setData(data);
         }
+        //返回结果
         return result;
     }
 

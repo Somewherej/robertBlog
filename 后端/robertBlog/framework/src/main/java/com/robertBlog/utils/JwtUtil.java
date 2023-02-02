@@ -11,8 +11,11 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
+
 /**
- * JWT工具类
+ * @author Somewherej
+ * @date 2022-11-27 12:44
+ * @description JWT工具类
  */
 public class JwtUtil {
 

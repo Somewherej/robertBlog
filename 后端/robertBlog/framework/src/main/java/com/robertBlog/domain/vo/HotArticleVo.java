@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  * @author Somewherej
  * @data 2022-11-16 16:48
- * @descrip tion
+ * @description:  hotArticleList的Vo
  */
 
 @Data

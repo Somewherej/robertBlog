@@ -4,8 +4,8 @@ import com.robertBlog.enums.AppHttpCodeEnum;
 
 /**
  * @author Somewherej
- * @Date 2022-11-21 20:21
- * @Description
+ * @date 2022-11-21 20:21
+ * @description
  */
 public class SystemException extends RuntimeException{
 

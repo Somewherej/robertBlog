@@ -29,31 +29,43 @@ import java.util.stream.Collectors;
  */
 @Service("categoryService")
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
-
+    /**
+     * CategoryServiceImpl不能查询Article表
+     * 所以需要注入articleService
+     */
     @Autowired
     private ArticleService articleService;
 
+
+    /**
+     *  函数说明:
+     *  查询文章分类 封装成ResponseResult返回
+     */
     @Override
     public ResponseResult getCategoryList() {
-        //查询文章表  状态为已发布的文章
+        //queryWrapper是mybatis plus中实现查询的对象封装操作类
         LambdaQueryWrapper<Article> articleWrapper = new LambdaQueryWrapper<>();
+        //必须是正式文章(草稿 删除文章不能显示)
+        //使用字面量而不是字面值（比较好维护)
         articleWrapper.eq(Article::getStatus, SystemConstants.ARTICLE_STATUS_NORMAL);
+        //CategoryServiceImpl不能查询Article表  所以需要注入articleService
         List<Article> articleList = articleService.list(articleWrapper);
-        //获取文章的分类id，并且去重
-        Set<Long> categoryIds = articleList.stream()
-                .map(article -> article.getCategoryId())
-                .collect(Collectors.toSet());   //流整成集合
-
-        //查询分类表
+        //获取文章的分类id 但是需要去重
+        Set<Long> categoryIds = articleList.stream()    //转换成stream流形式
+                .map(article -> article.getCategoryId())  //获取每个元素article的文章分类
+                .collect(Collectors.toSet());   //流整成集合(他会自动去重)
+        //根据分类id  查询分类表
         List<Category> categories = listByIds(categoryIds);
         categories = categories.stream().
                 filter(category -> SystemConstants.STATUS_NORMAL.equals(category.getStatus()))
+                //必须这个分ID是正常的可以显示的
                 .collect(Collectors.toList());
         //封装vo
         List<CategoryVo> categoryVos = BeanCopyUtils.copyBeanList(categories, CategoryVo.class);
-
         return ResponseResult.okResult(categoryVos);
     }
+
+
 
     @Override
     public List<CategoryVo> listAllCategory() {

@@ -9,8 +9,8 @@ import java.util.Date;
 
 /**
  * @author Somewherej
- * @Date 2022-11-18 12:10
- * @Description
+ * @date 2022-11-18 12:10
+ * @description ArticleDetailVo
  */
 @Data
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class ArticleDetailVo {
     private String title;
     //所属分类id
     private Long categoryId;
-    //所属分类id
+    //所属分类名字
     private String categoryName;
     //文章内容
     private String content;

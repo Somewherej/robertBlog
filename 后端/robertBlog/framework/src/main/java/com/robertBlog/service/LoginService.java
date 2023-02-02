@@ -10,6 +10,15 @@ import org.springframework.context.annotation.Bean;
  * @Description
  */
 public interface LoginService {
+    /**
+     * 函数说明:
+     *   后台管理系统登录
+     */
     ResponseResult login(User user);
+
+    /**
+     * 函数说明:
+     *   后台管理系统退出
+     */
     ResponseResult logout();
 }

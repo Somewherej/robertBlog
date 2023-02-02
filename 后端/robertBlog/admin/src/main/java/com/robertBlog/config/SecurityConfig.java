@@ -20,13 +20,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * @author Somewherej
- * @Date 2022-11-19 16:47
- * @Description
+ * @date 2022-11-19 16:47
+ * @description
  */
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * 函数说明:
+     *   重写这个方法AuthenticationManager可以将它暴露到bean容器中
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -44,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //关闭csrf
+                //关闭csrf(前后端分离)
                 .csrf().disable()
                 //不通过Session获取SecurityContext
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -52,10 +56,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/user/login").anonymous()
-//                //注销接口需要认证才能访问
-//                .antMatchers("/logout").authenticated()
-//                .antMatchers("/user/userInfo").authenticated()
-//                .antMatchers("/upload").authenticated()
                 // 除上面外的所有请求全部不需要认证即可访问
                 .anyRequest().authenticated();
 
@@ -67,10 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout().disable();
         //把jwtAuthenticationTokenFilter添加到SpringSecurity的过滤器链中
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        //允许跨域
+        //允许跨域(前后端分离)
         http.cors();
     }
-
+    /**
+     * 函数说明:
+     *   采用BCryptPasswordEncoder()进行加密
+     */
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
