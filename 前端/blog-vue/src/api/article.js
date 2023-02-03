@@ -12,7 +12,7 @@ export function articleList(query) {
     })
 }
 
-//查询最热文章
+// 查询最热文章
 export function hotArticleList() {
     return request({
         url: '/article/hotArticleList',
@@ -23,7 +23,7 @@ export function hotArticleList() {
     })
 }
 
-//获取文章详情
+// 获取文章详情
 export function getArticle(articleId) {
     return request({
         url: '/article/' + articleId,
@@ -34,19 +34,7 @@ export function getArticle(articleId) {
     })
 }
 
-
-//获取每个文章对应的所有标签
-export function getArticleTag(articleId) {
-  return request({
-    url: '/article/getArticleTag/' + articleId,
-    headers: {
-      isToken: false
-    },
-    method: 'get'
-  })
-}
-
-
+// 获取当前文章的访问量
 export function updateViewCount(articleId) {
     return request({
         url: '/article/updateViewCount/' + articleId,
@@ -55,5 +43,4 @@ export function updateViewCount(articleId) {
         },
         method: 'put'
     })
-
 }

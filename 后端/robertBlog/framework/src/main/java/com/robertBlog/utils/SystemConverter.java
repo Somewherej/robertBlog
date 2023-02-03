@@ -26,7 +26,6 @@ public class SystemConverter {
                 .map(o -> o.setChildren(getChildList(MenuTreeVos, o)))
                 .collect(Collectors.toList());
 
-
         return options;
     }
 

@@ -137,9 +137,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public ResponseResult getArticleDetail(Long id) {
         //根据id查询文章
         Article article = getById(id);
-        //从redis中获取viewCount
+        //从redis中获取viewCount(设置定时任务了)
         Integer viewCount = redisCache.getCacheMapValue("article:viewCount", id.toString());
-        //类似要转换一下,string转long
+        //类似要转换一下,Integer转long
         article.setViewCount(viewCount.longValue());
         //articleDetailVo封装响应返回
         ArticleDetailVo articleDetailVo = BeanCopyUtils.copyBean(article, ArticleDetailVo.class);
@@ -155,7 +155,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     /**
      *  函数说明:
-     *  查询当前id文章的浏览量
+     *    更新博客浏览量
      */
     @Override
     public ResponseResult updateViewCount(Long id) {

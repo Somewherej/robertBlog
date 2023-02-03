@@ -50,13 +50,22 @@ public class LoginController {
      */
     @PostMapping("/user/login")
     public ResponseResult login(@RequestBody User user){
+        //后端的表单校验  只用前端没用
         if(!StringUtils.hasText(user.getUserName())){
             //提示 必须要传用户名
+            //说人话就是捕捉异常封装给前端
+            //抛出异常-->SystemException-->GlobalExceptionHandler(捕获到响应给前端)
             throw new SystemException(AppHttpCodeEnum.REQUIRE_USERNAME);
         }
         return loginService.login(user);
     }
 
+
+    /**
+     * 函数说明:
+     *   后台管理系退出
+     *   删除redis中的用户信息
+     */
     @PostMapping("/user/logout")
     public ResponseResult logout(){
         return loginService.logout();
@@ -66,47 +75,47 @@ public class LoginController {
 
 
 
-    /*
-    函数说明:查询当前登录用户的权限信息  角色信息  用户信息
-    请求返回的数据
-    AdminUserInfoVo
-    {
-    "code": 200,
-    "data": {
-        "permissions": [
-            "system:user:list",
-            "system:role:list",
-            "system:menu:list",
-            "system:user:query",
-            "system:user:add",
-            "system:user:edit",
-            "system:user:remove",
-            "system:user:export",
-            "system:user:import",
-            "system:user:resetPwd",
-            "system:role:query",
-            "system:role:add",
-            "system:role:edit",
-            "system:role:remove",
-            "system:role:export",
-            "system:menu:query",
-            "system:menu:add",
-            "system:menu:edit",
-            "system:menu:remove",
-            "content:category:list",
-            "content:article:list",
-            "content:article:writer"
-        ],
-        "roles": [
-            "admin"
-        ],
-        "user": {
-            "id": "1",
-            "nickName": "sg333"
-        }
-    },
-    "msg": "操作成功"
-    }
+    /**
+     *函数说明:查询当前登录用户的权限信息  角色信息  用户信息
+     *请求返回的数据
+     *AdminUserInfoVo
+     *{
+     *"code": 200,
+     *"data": {
+     *   "permissions": [
+     *       "system:user:list",
+     *       "system:role:list",
+     *       "system:menu:list",
+     *       "system:user:query",
+     *       "system:user:add",
+     *       "system:user:edit",
+     *       "system:user:remove",
+     *       "system:user:export",
+     *       "system:user:import",
+     *       "system:user:resetPwd",
+     *       "system:role:query",
+     *       "system:role:add",
+     *       "system:role:edit",
+     *       "system:role:remove",
+     *       "system:role:export",
+     *       "system:menu:query",
+     *       "system:menu:add",
+     *       "system:menu:edit",
+     *       "system:menu:remove",
+     *       "content:category:list",
+     *       "content:article:list",
+     *       "content:article:writer"
+     *   ],
+     *   "roles": [
+     *       "admin"
+     *   ],
+     *   "user": {
+     *       "id": "1",
+     *       "nickName": "sg333"
+     *   }
+     *},
+     *"msg": "操作成功"
+     *}
      * */
      @GetMapping("getInfo")
      public  ResponseResult<AdminUserInfoVo> getInfo(){
@@ -115,12 +124,13 @@ public class LoginController {
 
          //根据用户id查询权限信息
          //通过menuService行查询
-         //查询返回的是一个字符串集合
+         //查询返回的是一个字符串集合"permissions"
          List<String> perms = menuService.selectPermsByUserId(loginUser.getUser().getId());
 
          //根据用户id查询角色信息
          List<String> roleKeyList = roleService.selectRoleKeyByUserId(loginUser.getUser().getId());
-         //List<String> roleKeyList = null;
+
+
          //获取用户信息
          User user = loginUser.getUser();
          //封装Vo对象向前端传递数据
@@ -132,7 +142,52 @@ public class LoginController {
      }
 
 
-    // 函数说明:前端为了实现动态路由的效果,需要后端有接口能返回用户所能访问的菜单数据。
+
+    /**
+     *函数说明:
+     * 前端为了实现动态路由的效果,需要后端有接口能返回用户所能访问的菜单数据。
+     *请求返回的数据
+     *AdminUserInfoVo
+     {
+        "code":200,
+        "data":{
+        "menus":[
+        {
+          "children":[],
+          "component":"content/article/write/index",
+           "createTime":"2022-01-08 11:39:58",
+           "icon":"build",
+           "id":2023,
+           "menuName":"写博文",
+           "menuType":"C",
+           "orderNum":"0",
+           "parentId":0,
+           "path":"write",
+           "perms":"content:article:writer",
+           "status":"0",
+           "visible":"0"
+        },
+        {
+           "children":[
+            {
+              "children":[],
+               "component":"system/user/index",
+               "createTime":"2021-11-12 18:46:19",
+               "icon":"user",
+               "id":100,
+               "menuName":"用户管理",
+               "menuType":"C",
+               "orderNum":"1",
+               "parentId":1,
+               "path":"user",
+               "perms":"system:user:list",
+               "status":"0",
+               "visible":"0"
+        },
+     },
+     "msg":"操作成功"
+     }
+     * */
     @GetMapping("getRouters")
     public ResponseResult<RoutersVo> getRouters(){
          //获取用户的Id

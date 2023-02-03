@@ -35,25 +35,12 @@
           <a :href="'#/DetailArticle?aid=' + item.id" target="_blank">{{
             item.title
           }}</a>
-
         </li>
       </ul>
     </section>
+
+
     <!-- 右侧上滑小图片 -->
-    <div
-      v-if="this.$store.state.themeObj.user_start != 0"
-      :class="gotoTop ? 'toTop hidden' : 'toTop goTop hidden'"
-      @click="toTopfun"
-    >
-      <img
-        :src="
-          this.$store.state.themeObj.right_img
-            ? this.$store.state.themeObj.right_img
-            : 'static/img/scroll.png'
-        "
-        alt=""
-      />
-    </div>
     <div
       v-else
       :class="gotoTop ? 'toTophui hidden' : 'toTophui goTophui hidden'"
@@ -78,12 +65,9 @@ export default {
   data() {
     //选项 / 数据
     return {
-      fixDo: false,
-      loveme: false,
       gotoTop: false, //返回顶部
       going: false, //是否正在执行上滑动作
       browseList: "", //热门文章 浏览量最多
-      artCommentList: "", //最新评论
       catchMeObj: {
         //个人信息
         git: "https://github.com/Somewherej",
@@ -94,13 +78,11 @@ export default {
   methods: {
     //事件处理器
     toTopfun: function (e) {
-      var that = this;
-      this.gotoTop = false;
-      this.going = true;
+      this.gotoTop = false;   //返回顶部
+      this.going = true;    //是否正在执行上滑动作
       var timer = setInterval(function () {
         //获取滚动条距离顶部高度
-        var osTop =
-          document.documentElement.scrollTop || document.body.scrollTop;
+        var osTop = document.documentElement.scrollTop || document.body.scrollTop;
         var ispeed = Math.floor(-osTop / 7);
         document.documentElement.scrollTop = document.body.scrollTop =
           osTop + ispeed;
@@ -126,19 +108,15 @@ export default {
     //生命周期函数
     var that = this;
     window.onscroll = function () {
+      //获取滚动条的位置
       var t = document.documentElement.scrollTop || document.body.scrollTop;
-      // console.log(t);
       if (!that.going) {
         if (t > 600) {
+          //控制显示小图标
           that.gotoTop = true;
         } else {
           that.gotoTop = false;
         }
-      }
-      if (t > 1200) {
-        that.fixDo = true;
-      } else {
-        that.fixDo = false;
       }
     };
     //查询浏览量最多的10篇文章数据

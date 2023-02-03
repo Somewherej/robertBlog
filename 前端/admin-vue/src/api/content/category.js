@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import downloadService from '@/utils/downloadService'
 
-// 查询分类列表
+// 查询分类
 export function listCategory(query) {
   return request({
     url: '/content/category/list',
@@ -17,7 +17,7 @@ export function listAllCategory() {
     method: 'get'
   })
 }
-// 查询分类详细
+// 查询分类详细信息
 export function getCategory(id) {
   return request({
     url: '/content/category/' + id,
@@ -51,10 +51,3 @@ export function delCategory(id) {
   })
 }
 
-// 导出分类
-export function exportCategory() {
-  return downloadService({
-    url: '/content/category/export',
-    method: 'get'
-  })
-}

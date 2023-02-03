@@ -17,11 +17,8 @@
             </header>
       </el-col>
         <el-col class="click-load-more">
-
             <a v-show="hasMore"   href="javascript:void(0);" @click="addMoreFun"><i class="el-icon-more"></i> </a>
             <a v-show="!hasMore"   href="javascript:void(0);"><i class="el-icon-more-outline"></i></a>
-
-
          </el-col>
     </el-row>
 </template>
@@ -29,7 +26,6 @@
 <script>
 import {initDate} from '../utils/server.js'
 import {articleList} from '../api/article'
-import {mavonEditor} from 'mavon-editor'
     export default {
         name:'Share',
         data() { //选项 / 数据
@@ -50,6 +46,7 @@ import {mavonEditor} from 'mavon-editor'
                 return initDate(oldDate,full)
             },
             getList(){
+                //分页显示
                 articleList(this.queryParams).then((response)=>{
                     this.articleList = this.articleList.concat(response.rows)
                     if(response.total<=this.articleList.length){
@@ -58,22 +55,23 @@ import {mavonEditor} from 'mavon-editor'
                         this.hasMore=true
                         this.queryParams.pageNum++
                     }
-                    //const markdownIt = mavonEditor.getMarkdownIt()
-                    // markdownIt.re
-                    //this.content = markdownIt.render(response.content);
                 })
             },
-            showSearchShowList:function(initData){//展示数据
+            // 展示数据
+            showSearchShowList:function(initData){
                 if(initData){
                     this.articleList = []
                 }
                 this.getList()
             },
-            addMoreFun:function(){//查看更多
+            // 查看更多
+            addMoreFun:function(){
                 this.showSearchShowList(false);
             },
+            // 路由是否发生改变
             routeChange:function(){
                 var that = this;
+                //queryParams属性作用是给后台传递查询条件
                 this.queryParams.categoryId = (that.$route.query.classId==undefined?0:parseInt(that.$route.query.classId));//获取传参的classId
                 this.showSearchShowList(true);
             }
@@ -87,7 +85,6 @@ import {mavonEditor} from 'mavon-editor'
            '$store.state.keywords':'routeChange'
          },
         created() { //生命周期函数
-            // console.log(this.$route);
             var that = this;
             that.routeChange();
         }

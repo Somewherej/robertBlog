@@ -30,6 +30,14 @@ import java.util.stream.Collectors;
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
     @Autowired
     private RoleMenuService roleMenuService;
+
+
+
+
+    /**
+     *函数说明:
+     * 根据用户的ID查询角色信息
+     * */
     @Override
     public List<String> selectRoleKeyByUserId(Long id) {
         //判断是否是管理员 如果是返回集合中只需要有admin
@@ -42,6 +50,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         //getBaseMapper是RoleMapper
         return getBaseMapper().selectRoleKeyByUserId(id);
     }
+
+
+
+
 
     @Override
     public ResponseResult selectRolePage(Role role, Integer pageNum, Integer pageSize) {
@@ -64,6 +76,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return ResponseResult.okResult(pageVo);
     }
 
+
+
+    /**
+     *函数说明:
+     * 新增角色信息
+     * */
     @Override
     @Transactional
     public void insertRole(Role role) {
@@ -74,6 +92,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         }
     }
 
+
+    /**
+     *函数说明:
+     * 更新角色信息
+     * */
     @Override
     public void updateRole(Role role) {
         updateById(role);

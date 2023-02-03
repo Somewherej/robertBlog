@@ -16,25 +16,33 @@ import java.util.stream.Collectors;
 
 
 /**
- * 菜单权限表(Menu)表服务实现类
- *
  * @author Somewherej
- * @since 2022-11-26 21:21:36
+ * @date  2022-11-26 21:21:36
+ * @description  菜单权限表(Menu)表服务实现类
  */
 @Service("menuService")
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
 
-    //函数说明:   根据用户的ID查询所有的权限信息
-    //permissions中需要所有类型为C或者F(C是菜单,F是按钮)       状态为正常,且未被删除的权限
+
+    /**
+     *函数说明:
+     * 根据用户的ID查询所有的权限信息
+     * permissions中需要所有类型为C或者F(C是菜单,F是按钮)
+     * 状态为正常,且未被删除的权限
+     * */
     @Override
     public List<String> selectPermsByUserId(Long id) {
-        //如果是管理员，返回所有的权限
+        // 如果是管理员，返回所有的权限
         if(SecurityUtils.isAdmin()){
             LambdaQueryWrapper<Menu> wrapper = new LambdaQueryWrapper<>();
+            // 需要C 菜单  F 按钮
             wrapper.in(Menu::getMenuType,SystemConstants.MENU,SystemConstants.BUTTON);
+            // 状态正常的
             wrapper.eq(Menu::getStatus,SystemConstants.STATUS_NORMAL);
+            //  返回的menus的list形式
             List<Menu> menus = list(wrapper);
+            // 但是我们只需要权限字段
             List<String> perms = menus.stream()
                     .map(Menu::getPerms)
                     .collect(Collectors.toList());
@@ -47,8 +55,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
 
 
-
-    //函数说明:   根据用户ID 查询角色信息  Then查询所有的menu信息
+    /**
+     * 函数说明:
+     * 根据用户ID 查询角色信息  Then查询所有的menu信息
+     * */
+    //函数说明:
     @Override
     public List<Menu> selectRouterMenuTreeByUserId(Long userId) {
         MenuMapper menuMapper = getBaseMapper();
@@ -70,29 +81,40 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
 
 
-
-    //函数说明: 根据这个用户表去封装一个层级关系
-    //找出第一层菜单,然后再把它们的子菜单设置到children属性中
+    /**
+     * 函数说明:
+     * 根据这个用户表去封装一个层级关系
+     * 找出第一层菜单,然后再把它们的子菜单设置到children属性中
+     * */
     private List<Menu> builderMenuTree(List<Menu> menus, Long parentId) {
         List<Menu> menuTree = menus.stream()
                 //第一层筛选一次   找到符合条件的根节点
                 .filter(menu -> menu.getParentId().equals(parentId))
-                //第二层再进行筛选  找到符合条件的子菜单
+                //第二层再进行筛选  找到符合条件的子菜单设置到children属性中
                 .map(menu -> menu.setChildren(getChildren(menu, menus)))
                 //收集List集合
                 .collect(Collectors.toList());
         return menuTree;
     }
 
-    //函数说明:
+
+
+    /**
+     * 函数说明:
+     *   找到符合条件的子菜单
+     * */
     private List<Menu> getChildren(Menu menu, List<Menu> menus) {
         List<Menu> childrenList = menus.stream()
+                //过滤第一遍 找到menus的所有子菜单
                 .filter(m -> m.getParentId().equals(menu.getId()))
                 //使用递归
+                //找到符合条件的子菜单设置到children属性中
                 .map(m->m.setChildren(getChildren(m,menus)))
                 .collect(Collectors.toList());
         return childrenList;
     }
+
+
 
 
     @Override
@@ -122,12 +144,6 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
 
 
 
-    /**
-     * 获取存入参数的 子Menu集合
-     * @param menu
-     * @param menus
-     * @return
-     */
 
 }
 

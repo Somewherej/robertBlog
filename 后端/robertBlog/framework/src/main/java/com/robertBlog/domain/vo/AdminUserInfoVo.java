@@ -9,8 +9,8 @@ import java.util.List;
 
 /**
  * @author Somewherej
- * @Date 2022-11-26 21:32
- * @Description
+ * @date 2022-11-26 21:32
+ * @description    AdminUserInfoVo
  */
 @Data
 @Accessors(chain = true)
@@ -19,7 +19,8 @@ import java.util.List;
 public class AdminUserInfoVo {
     //权限信息   字符串集合
     private List<String> permissions;
-    //角色信息
+    //角色
     private List<String> roles;
+    //用户信息
     private UserInfoVo user;
 }

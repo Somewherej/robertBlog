@@ -2,8 +2,8 @@ package com.robertBlog.job;
 
 /**
  * @author Somewherej
- * @Date 2022-12-29 15:06
- * @Description
+ * @date 2022-12-29 15:06
+ * @description   更新博客浏览量定时任务
  */
 import com.robertBlog.domain.entity.Article;
 import com.robertBlog.service.ArticleService;
@@ -30,14 +30,13 @@ public class UpdateViewCountJob {
     public void updateViewCount(){
         //获取redis中的浏览量
         Map<String, Integer> viewCountMap = redisCache.getCacheMap("article:viewCount");
-        //首先将Map转换成流对象
+        //首先将Map转换成流对象   entrySet()元素是key value
         //entry去设置article的对象的id,viewCount
-        //最后还要对这个流对象进行一次收集操作
         List<Article> articles = viewCountMap.entrySet()
                 .stream()
-                .map(entry -> new Article(Long.valueOf(entry.getKey()), entry.getValue().longValue()))
-                .collect(Collectors.toList());
-        //更新到数据库中(只更新一条)
+                .map(entry -> new Article(Long.valueOf(entry.getKey()), entry.getValue().longValue())) //String转Long  Integer转Long类型
+                .collect(Collectors.toList()); //最后还要对这个流对象进行一次收集操作
+        //更新到数据库中
         articleService.updateBatchById(articles);
     }
 }

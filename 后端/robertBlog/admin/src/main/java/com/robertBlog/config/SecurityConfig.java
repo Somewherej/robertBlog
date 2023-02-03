@@ -44,7 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     AccessDeniedHandler accessDeniedHandler;
 
-
+    /**
+     * 函数说明:
+     *   配置SecurityConfig
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -59,11 +62,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 除上面外的所有请求全部不需要认证即可访问
                 .anyRequest().authenticated();
 
+
+        /* *
+         * 当我们的项目在认证出错or权限不足的时候响应回来的Json是Security的异常处理结果
+         * 但是这个相应的格式是不符合要求的，所以需要自动定义异常处理
+         * AccessDeniedHandler认证失败处理器
+         * AccessDeniedHandler授权失败处理器
+        */
         //配置异常处理器
         http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler);
-        //关闭默认的注销功能
+
+
+        //关闭默认的注销功能  用我们自己的
         http.logout().disable();
         //把jwtAuthenticationTokenFilter添加到SpringSecurity的过滤器链中
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);

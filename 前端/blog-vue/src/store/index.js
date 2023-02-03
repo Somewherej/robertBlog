@@ -8,7 +8,6 @@ Vue.use(Vuex)
 export const state = {
   loading: false,
   themeObj: 0,//主题
-  keywords:'',//关键词
   baseURL:'http://124.220.178.250:7777/'
 }
 

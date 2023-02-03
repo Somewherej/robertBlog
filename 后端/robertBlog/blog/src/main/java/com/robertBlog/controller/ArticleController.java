@@ -1,7 +1,4 @@
 package com.robertBlog.controller;
-
-
-import com.robertBlog.domain.entity.Article;
 import com.robertBlog.domain.entity.domain.ResponseResult;
 import com.robertBlog.service.ArticleService;
 
@@ -12,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author Somewherej
  * @data 2022-10-31 11:51
- * @descrip tion
+ * @description   blog的ArticleController
  */
 @RestController
 @RequestMapping("/article")
@@ -45,9 +42,11 @@ public class ArticleController {
     public ResponseResult articleList(Integer pageNum,Integer pageSize,Long categoryId){
         return articleService.articleList(pageNum,pageSize,categoryId);
     }
+
+
     /**
      *  函数说明:
-     *  查询博客浏览量
+     *    更新博客浏览量
      */
     @PutMapping("/updateViewCount/{id}")
     //查询博客浏览量这个数据是要从Path去取

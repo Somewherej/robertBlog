@@ -4,7 +4,7 @@
         <div class="container">
           <rb-header></rb-header>
           <body>
-            <el-row  :gutter="40">
+            <el-row :gutter="40">
               <el-col :sm="27" :md="17" style="transition:all .5s ease-out;margin-bottom:30px;">
                 <rb-articleList></rb-articleList>
               </el-col>

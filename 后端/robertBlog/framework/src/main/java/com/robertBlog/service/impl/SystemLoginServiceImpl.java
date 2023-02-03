@@ -2,8 +2,8 @@ package com.robertBlog.service.impl;
 
 /**
  * @author Somewherej
- * @Date 2022-11-23 11:41
- * @Description
+ * @date 2022-11-23 11:41
+ * @description  SystemLoginServiceImpl
  */
 
 
@@ -69,6 +69,15 @@ public class SystemLoginServiceImpl implements LoginService {
         //把用户信息存在redis, 速度会比较快
         redisCache.setCacheObject("login:"+userId,loginUser);
         //把token封装 返回
+        /* *
+         * {
+         *    "code":200,
+         *    "data": {
+         *        "token": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+         *    },
+         *    "msg":操作成功
+         * }
+         */
         Map<String,String> map = new HashMap<>();
         map.put("token",jwt);
         return ResponseResult.okResult(map);
@@ -76,7 +85,8 @@ public class SystemLoginServiceImpl implements LoginService {
 
     /**
      * 函数说明:
-     *   后台管理系统退出
+     *   后台管理系退出
+     *   删除redis中的用户信息
      */
     @Override
     public ResponseResult logout() {

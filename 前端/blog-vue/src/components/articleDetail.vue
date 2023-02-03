@@ -27,39 +27,24 @@ import {mavonEditor} from 'mavon-editor'
             return {
                 aid:'',//文章ID
                 detailObj:{},//返回详情数据
-                haslogin:false,//是否已经登录
-                userId:'',//用户id
             }
         },
         methods: { //事件处理器
-            showInitDate:function(date,full){//年月日的编辑
-                // console.log(detailObj.create_time,date,full);
-                return initDate(date,full);
-            },
             getArticleDetail:function(){
                 getArticle(this.aid).then((response)=>{
                     this.detailObj = response
                      const markdownIt = mavonEditor.getMarkdownIt()
-                    // markdownIt.re
+                    // 对response的content内容进行markdown渲染
                     this.detailObj.content = markdownIt.render(response.content);
                 })
             },
             routeChange:function(){
                 var that = this;
-                that.aid = that.$route.query.aid==undefined?1:parseInt(that.$route.query.aid);//获取传参的aid
-                //判断用户是否存在
-              //  if(localStorage.getItem('userInfo')){
-              //     that.haslogin = true;
-              //      that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
-              //      that.userId = that.userInfo.userId;
-                    // console.log(that.userInfo);
-              //   }else{
-                    //
-                    that.haslogin = true;
-
-              //  }
+                //aid就是我们点击的文章ID   是否有获取到这个文章ID?   反正最终结果一定是有的
+                that.aid = that.$route.query.aid==undefined?1:parseInt(that.$route.query.aid); //获取传参的aid
                 //获取详情接口
                 this.getArticleDetail()
+                //对对应文章的浏览量进行更新
                 updateViewCount(that.aid)
             }
         },

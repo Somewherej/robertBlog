@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 查询文章列表
+// 添加文章
 export function addArticle(data) {
   return request({
     url: '/content/article',
@@ -26,7 +26,7 @@ export function delArticle(id) {
   })
 }
 
-// 查询分类详细
+// 查询文章详细内容
 export function getArticle(id) {
   return request({
     url: '/content/article/' + id,
@@ -34,7 +34,7 @@ export function getArticle(id) {
   })
 }
 
-// 修改分类
+// 修改文章
 export function updateArticle(data) {
   return request({
     url: '/content/article',

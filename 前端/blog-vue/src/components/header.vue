@@ -23,44 +23,23 @@
 <script>
 
 import {getCategoryList} from '../api/category'
-import {
-	Typeit
-} from '../utils/plug.js'
 import header from "./header";
 import articleDetail from "./articleDetail";
-import rightlist from "./rightlist";
+import rightList from "./rightlist";
 import bottom from "./bottom";
 export default {
 	data() { //选项 / 数据
 		return {
-			userInfo: '', //用户信息
-			haslogin: false, //是否已登录
-			classListObj: '', //分类
+			classListObj: '', //文章分类
 			activeIndex: '/', //当前选择的路由模块
 			state: '', //icon点击状态
 			pMenu: true, //手机端菜单打开
-			// path:'',//当前打开页面的路径
-			input: '', //input输入内容
 			headBg: 'url(static/img/small_black.jpg)', //头部背景图
 			headTou: '', //头像
-			projectList: '' //项目列表
 		}
 	},
 
 	methods: { //事件处理器
-		handleOpen(key, keyPath) { //分组菜单打开
-			// console.log(key, keyPath);
-		},
-		handleClose(key, keyPath) { //分组菜单关闭
-			// console.log(key, keyPath);
-		},
-		searchChangeFun(e) { //input change 事件
-			// console.log(e)
-			if (this.input == '') {
-				this.$store.state.keywords = '';
-				this.$router.push({path:'/'});
-			}
-		},
 		getCategoryList(){
 			getCategoryList().then((response)=>{
 				this.classListObj = response
@@ -73,28 +52,13 @@ export default {
 			var that = this;
 			that.pMenu = true
 			this.activeIndex = this.$route.path == '/' ? '/Home' : this.$route.path;
-      //if (localStorage.getItem('userInfo')) { //存储用户信息
-      //	that.haslogin = true;
-      //	that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
-				// console.log(that.userInfo);
-      //} else {
-				that.haslogin = false;
-      //	}
-			//获取分类
 			this.getCategoryList()
-
-			if ((this.$route.name == "Share" || this.$route.name == "Home") && this.$store.state.keywords) {
-				this.input = this.$store.state.keywords;
-			} else {
-				this.input = '';
-				this.$store.state.keywords = '';
-			}
 		}
 	},
 	components: { //定义组件
     'rb-header':header,
     'rb-articleDetail':articleDetail,
-    'rb-rightList':rightlist,
+    'rb-rightList':rightList,
     'rb-bottom':bottom,
 	},
 	watch: {
@@ -102,37 +66,9 @@ export default {
 		'$route': 'routeChange'
 	},
 	created() { //生命周期函数
-		//判断当前页面是否被隐藏
 		var that = this;
-		var hiddenProperty = 'hidden' in document ? 'hidden' :
-			'webkitHidden' in document ? 'webkitHidden' :
-			'mozHidden' in document ? 'mozHidden' :
-			null;
-		var visibilityChangeEvent = hiddenProperty.replace(/hidden/i, 'visibilitychange');
-		var onVisibilityChange = function() {
-			if (!document[hiddenProperty]) { //被隐藏
-				if (that.$route.path != '/DetailShare') {
-					if (localStorage.getItem('userInfo')) {
-						that.haslogin = true;
-					} else {
-						that.haslogin = false;
-					}
-				}
-			}
-		}
-		document.addEventListener(visibilityChangeEvent, onVisibilityChange);
-		// console.log();
-		this.routeChange();
-
-
+    that.routeChange();
 	},
-	mounted() { //页面元素加载完成
-		var that = this;
-		var timer = setTimeout(function() {
-			Typeit(that.$store.state.themeObj.user_start, "#luke"); //打字机效果
-			clearTimeout(timer);
-		}, 500);
-	}
 }
 </script>
 

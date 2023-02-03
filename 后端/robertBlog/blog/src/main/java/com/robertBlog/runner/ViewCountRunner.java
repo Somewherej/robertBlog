@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 
 /**
  * @author Somewherej
- * @Date 2022-12-29 15:01
- * @Description
+ * @date 2022-12-29 15:01
+ * @description
+ *  CommandLineRunner实现项目启动时预处理功能(初始化缓存)
+ * 交给Springboot容器去读取
  */
-// CommandLineRunner实现项目启动时预处理功能
-//交给Springboot容器去读取
 @Component
 public class ViewCountRunner implements CommandLineRunner {
 
@@ -31,10 +31,12 @@ public class ViewCountRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         //查询所有的博客信息
         List<Article> articles = articleMapper.selectList(null);
-        //collect是一个能够把stream管道中的结果集装进一个List集合的终极操作。 collect是一个把stream规约成一个value的规约操作
+        // collect是一个能够把stream管道中的结果集装进一个List集合的终极操作。
+        // collect是一个把stream规约成一个value的规约操作
+        // Collectors.toMap(获取key和value) (id ViewCount)
         Map<String, Integer> viewCountMap = articles.stream()
                 .collect(Collectors.toMap(article -> article.getId().toString(), article -> {
-                    return article.getViewCount().intValue();//
+                    return article.getViewCount().intValue();
                 }));
         //存储到redis中  id viewCount
         redisCache.setCacheMap("article:viewCount",viewCountMap);
