@@ -1,6 +1,9 @@
 # roberBlog
 
-基于Springboot的前后端分离博客系统
+基于Vue-Springboot的前后端分离博客系统
+
+使用后台前端解决方案[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
+
 
 # 技术选型
 
@@ -91,11 +94,6 @@
 <img src="images/QRcode.png" alt="图片名称" width = "250" height = "250" align=center />   
 
 
-# 致谢
-
-[三更](https://www.bilibili.com/video/BV1hq4y1F7zk/?spm_id_from=333.999.0.0&vd_source=136e8a92674100e8373c8cb6bb1e5092)
-
-
-
+ 
 
 
